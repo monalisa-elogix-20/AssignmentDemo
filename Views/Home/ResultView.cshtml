@@ -1,0 +1,59 @@
+﻿@model AssignmentGit.Models.OccurrencesViewModel
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Message
+    </div>
+}
+else
+{
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" title="sorted each comment words by ASCII value using Binary search tree">Output1(ASCII Valuewise Sort)</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" title="Each word occurences count though all the messages">Output2(Word Occurences Count)</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active pt-2 scroll-at-500" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <table class="table table-bordered border-dark">
+                <thead>
+                    <tr>
+                        <td>Actual</td>
+                        <td>Sorted</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model?.DisplaySortedWordsMessagesList != null)
+                    {
+                        for (int i = 0; i < Model?.DisplaySortedWordsMessagesList.Count; i++)
+                        {
+                            <tr>
+                                <td>@Model.DisplayActualMessagesList[i]</td>
+                                <td>@Model.DisplaySortedWordsMessagesList[i]</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div class="tab-pane fade pt-2 scroll-at-500" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <ul class="list-group mb-3">
+                @if (Model?.WordOccured != null)
+                {
+                    foreach (KeyValuePair<string, int> item in Model?.WordOccured.OrderBy(key => key.Key))
+                    {
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">@item.Key</h6>
+                            </div>
+                            <span class="text-muted">@item.Value</span>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+}

@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="row ">
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title font-weight-bold"> Assignment Demo </h5>
+                <small id="emailHelp" class="form-text text-muted"> Input Git Repo Details</small>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleOctokit">
+                        <label class="form-check-label" for="exampleOctokit">Check Using Octokit Repo</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Repository </label>
+                        <input type="text" class="form-control" id="reponame" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Project Name </label>
+                        <input type="text" class="form-control" id="Projname" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">User </label>
+                        <input type="text" class="form-control" id="Uname" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Token </label>
+                        <input type="text" class="form-control" id="Token">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Url *</label>
+                        <textarea class="form-control" id="Url"></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-primary go">Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-8">
+        <div class="card">
+            <div class="card-header" style="text-align:right">
+                <button type="button" class="btn btn-primary csv " title="Word Occurrences count"> CSV Download</button>
+            </div>
+            <div class="card-body">
+                <div class="row"><div class="col" id="rslt_container"></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //populateExampleVal();
+            $('button.go').click(function () {
+                var _uname = $('#Uname').val();
+                var _reponame = $('#reponame').val();
+                var _projname = $('#Projname').val();
+                var _token = $('#Token').val();
+                var _url = $('#Url').val();
+
+                if (_uname == '' || _token == '' || _url == '') {
+                    alert('Input all value');
+                    return false;
+                }
+
+                $('#rslt_container').load('@Url.Action("ResultView")', { Uname: _uname, Reponame: _reponame, Projname: _projname, Token: _token, Url: _url},function () {
+                            $('button.csv').click(function (event) {
+                                window.location.href = '@Url.Action("DownloadCSV")';
+                        });
+                });
+            });
+
+            $('#exampleOctokit').change(function () {
+                if ($(this).is(':checked')) {
+                    populateExampleVal();
+                }
+                else {
+                    $('input:text').val('');
+                    $('textarea').val('');
+                }
+            });
+
+            function populateExampleVal() {
+                $('#Uname').val('octokit');
+                $('#reponame').val('OctokitTests');
+                $('#Projname').val('octokit.net');
+                $('#Token').val('');
+                $('#Url').val('https://github.com/octokit/octokit.net.git');
+            }
+        });
+    </script>
+}
